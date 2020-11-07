@@ -1,0 +1,63 @@
+body {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    background: #111;
+    color: black;
+}
+
+.gameboard {
+    width: 50%;
+    height: 600px;
+    margin: 30px auto;
+    box-sizing: border-box;
+    display: flex;   
+    flex-flow: column nowrap;  
+    justify-content: space-between;
+    background-color: red;
+    box-shadow:
+            0 .25em 1em 0 rgba(0,0,0,0.30),
+            inset .25em .25em 1em 0 hsl(360, 88%, 72%),
+            inset .15em .15em .2em 0 hsl(360, 88%, 72%),
+            inset -.25em -.25em 1em 0 hsl(360, 88%, 22%),
+            inset -.15em -.15em .2em 0 hsl(360, 88%, 2%);
+    border-radius: 1.2em;
+    padding: 1.4em;
+}
+
+.gameboard__menu {
+    width: 90%;
+    max-width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 10px auto 5px;
+    padding: 2px;
+    height: 150px;
+    background-color: black;
+}
+
+.gameboard__puzzle {
+    width: 90%;  
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    border: 1px solid black;
+}
+
+.gameboard__puzzle__tile {
+    display: flex;
+    width: 25%;
+    height: 130px;
+    margin: 1%;
+    background-color: grey;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.empty {
+   cursor: default;
+   background-color: yellow;
+}
+
