@@ -9,9 +9,11 @@ body {
 }
 
 .gameboard {
-    width: 50%;
-    height: 600px;
-    margin: 30px auto;
+    width: 97%;
+    max-width: 420px;
+    height: 80vh;
+    max-height: 600px;
+    margin: 5vh auto;
     box-sizing: border-box;
     display: flex;   
     flex-flow: column nowrap;  
@@ -24,12 +26,11 @@ body {
             inset -.25em -.25em 1em 0 hsl(360, 88%, 22%),
             inset -.15em -.15em .2em 0 hsl(360, 88%, 2%);
     border-radius: 1.2em;
-    padding: 1.4em;
+    padding: 2px;
 }
 
 .gameboard__menu {
     width: 90%;
-    max-width: 100%;
     display: flex;
     flex-flow: row nowrap;
     margin: 10px auto 5px;
@@ -40,20 +41,27 @@ body {
 
 .gameboard__puzzle {
     width: 90%;  
+    height: 70%;
     margin: 0 auto;
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
     border: 1px solid black;
 }
 
 .gameboard__puzzle__tile {
     display: flex;
-    width: 25%;
-    height: 130px;
-    margin: 1%;
+    margin: 1px;
     background-color: grey;
     font-size: 20px;
     cursor: pointer;
+    border-radius: 5%;
+}
+
+.standart {
+    width: 24%;
+    height: 24%;
+    max-width: 93px;
 }
 
 .empty {

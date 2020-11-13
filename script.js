@@ -7,12 +7,12 @@ const GemPuzzle = {
      },
 
     properties: {
-        size: null,
+        size: null, 
         emptyTile: null,
         emptyTileRow: null,
         emptyTileColumn: null,
         tilesSequence: [], // initial puzzles content sequence
-        puzzlesArray: null, //current puzzles sequence
+        puzzlesArray: null, //current puzzles sequence in 2d array
     },
 
     init() {
@@ -26,19 +26,19 @@ const GemPuzzle = {
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
         
-        this.createTilesSequence(9);//invoke on button to chooze size of field
-        this.createPuzzle(9); //invoke on button to chooze size of field 
+        this.createTilesSequence(16);//invoke on button to chooze size of field
+        this.createPuzzle(16); //invoke on button to chooze size of field 
         this.elements.puzzles = Array.from(this.elements.puzzlesContainer.querySelectorAll('.gameboard__puzzle__tile'));
-        this.createPuzzlesArray(9); //invoke on button to choose size of field
+        this.createPuzzlesArray(16); //invoke on button to choose size of field
+       // this.timerOn();
     },
 
-    createTilesSequence(puzzleSize) {
+    createTilesSequence(puzzleSize) { //create array of random numbers for puzzles
         for (let i = 0; i < puzzleSize; i++) {
-            let randomNumber = this.randomInteger(1, 9);  
+            let randomNumber = this.randomInteger(1, puzzleSize);  
             if (this.properties.tilesSequence.includes(randomNumber)) --i;
             else this.properties.tilesSequence.push(randomNumber);   
-        };        
-        console.log(this.properties.tilesSequence);   
+        };          
     },
 
     randomInteger(min, max) { // случайное число от min до (max+1)
@@ -46,7 +46,7 @@ const GemPuzzle = {
         return Math.floor(rand);
     },
 
-    createPuzzlesArray(puzzleSize) { //form 2d array of current field situation
+    createPuzzlesArray(puzzleSize) { //create 2d array of current puzzles situation
         this.properties.puzzlesArray = new Array(this.properties.size);
         for (let j = 0; j < this.properties.puzzlesArray.length; j++) {
             this.properties.puzzlesArray[j] = new Array(this.properties.size);
@@ -58,37 +58,35 @@ const GemPuzzle = {
                i++;
             };
         };
-        this.defineClickableTiles();
+        this.defineClickableTiles(); // add clickable class to tiles around empty one
     },
     
-    changeSequence(e) { //to change orders of tiles 
+    changeSequence(e) { //to switch empty tile and available for click tile
         let currentTileColumn;
         let currentTileRow;
         if (e.target.classList.contains('empty')) return; 
         if (e.target.classList.contains('clickable')) {
-            let currentOrder =  e.target.style.order;
+            let currentOrder =  e.target.style.order; //change flex order between tiles
             let emptyOrder = this.properties.emptyTile.style.order
             e.target.style.order = emptyOrder;
             this.properties.emptyTile.style.order = currentOrder;
-            for (let j = 0; j < this.properties.size; j++) {
+            for (let j = 0; j < this.properties.size; j++) { //switch tiles in puzzlesArray
                 if (this.properties.puzzlesArray[j].indexOf(e.target) !== -1) {
                     currentTileRow = j;
                     currentTileColumn = this.properties.puzzlesArray[j].indexOf(e.target);
                     
                 }
-                for (let k = 0; k < this.properties.size; k++) {
+                for (let k = 0; k < this.properties.size; k++) { //clear all clickable classes to re-define the clickable tiles further
                     this.properties.puzzlesArray[j][k].classList.remove("clickable");
                 };
             };
-            //   console.log(currentTileRow, currentTileColumn, this.properties.emptyTileRow, this.properties.emptyTileColumn);
-         [this.properties.puzzlesArray[currentTileRow][currentTileColumn], this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn]] = [this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn], this.properties.puzzlesArray[currentTileRow][currentTileColumn]];
-           // console.log(this.properties.puzzlesArray);
+        [this.properties.puzzlesArray[currentTileRow][currentTileColumn], this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn]] = [this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn], this.properties.puzzlesArray[currentTileRow][currentTileColumn]];
         }
 
-        this.defineClickableTiles()
+        this.defineClickableTiles() //as tiles were switched, we need to re-define clickable tiles
     },      
 
-    defineClickableTiles() {
+    defineClickableTiles() { //after each click we find emty tile and add clickable class to all needed tiles
         let emptyTile;
         let row;
         let column;
@@ -105,16 +103,36 @@ const GemPuzzle = {
                };
             };
         };
-      this.properties.emptyTile = emptyTile;
+      this.properties.emptyTile = emptyTile; //save empty tile HTML and coordinates to switch tiles on click
       this.properties.emptyTileRow = row;
       this.properties.emptyTileColumn = column;
-   
     },
 
     createPuzzle(puzzleSize) {
         for (let i = 0; i < puzzleSize; i++) {
             const puzzleTile = document.createElement("div");
             puzzleTile.classList.add("gameboard__puzzle__tile");
+            switch(puzzleSize) {
+                case 16:
+                    puzzleTile.classList.add("standart");
+                break
+                case 9:
+                    puzzleTile.classList.add("standart");
+                break
+                case 25:
+                    puzzleTile.classList.add("standart");
+                break
+                case 36:
+                    puzzleTile.classList.add("standart");
+                break
+                case 49:
+                    puzzleTile.classList.add("standart");
+                break
+                case 64:
+                    puzzleTile.classList.add("standart");
+                break
+            };
+
             puzzleTile.textContent = this.properties.tilesSequence[i];
             puzzleTile.style.order = i;
     
