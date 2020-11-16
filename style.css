@@ -48,7 +48,11 @@ body {
 
 .gameboard__menu__timer,
 .gameboard__menu__movesCounter{
-    width: 15%;
+    width: 30%;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    justify-content: center;
     font-size: 1rem;
     color: white;
 }

@@ -3,6 +3,7 @@ const GemPuzzle = {
         main: null, //board
         menu: null,
         timer: null,
+        movesCounter: null,
         puzzlesContainer: null, //puzzles area
         puzzles: [], // HTML elements puzzles
      },
@@ -12,6 +13,7 @@ const GemPuzzle = {
             minutes: 0,
             sec: -1,
         },
+        moves: 0,
         size: null, 
         emptyTile: null,
         emptyTileRow: null,
@@ -28,8 +30,13 @@ const GemPuzzle = {
         this.elements.menu = document.createElement('div');
         this.elements.menu.classList.add('gameboard__menu');  
         this.elements.timer = document.createElement('div');
+        this.elements.timer.innerHTML = `<span>time:<span>`;
         this.elements.timer.classList.add('gameboard__menu__timer');
+        this.elements.movesCounter = document.createElement('div');
+        this.elements.movesCounter.innerHTML = `<span>moves:<span>`;
+        this.elements.movesCounter.classList.add('gameboard__menu__movesCounter');
         this.elements.menu.append(this.elements.timer);
+        this.elements.menu.append(this.elements.movesCounter);
         this.elements.main.append(this.elements.menu);
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
@@ -55,9 +62,9 @@ const GemPuzzle = {
             };
            
             if (minutes < 10) {
-                (sec < 10) ? self.elements.timer.textContent = `time 0${minutes}:0${sec}`: self.elements.timer.textContent = `time 0${minutes}:${sec}`;
+                (sec < 10) ? self.elements.timer.innerHTML = `time: 0${minutes}:0${sec}`: self.elements.timer.textContent = `time: 0${minutes}:${sec}`;
             } else {
-                (sec < 10) ? self.elements.timer.textContent = `time ${minutes}:0${sec}`: self.elements.timer.textContent = `time ${minutes}:${sec}`;
+                (sec < 10) ? self.elements.timer.innerHTML = `time: ${minutes}:0${sec}`: self.elements.timer.textContent = `time: ${minutes}:${sec}`;
             };
         };
         setInterval (() => count(self), 1000); 
@@ -93,9 +100,10 @@ const GemPuzzle = {
     changeSequence(tileTarg) { //to switch empty tile and available for click tile
         let currentTileColumn;
         let currentTileRow;
-       
-       
+            
         if (tileTarg) {
+            this.properties.moves++;
+            this.elements.movesCounter.innerHTML = `moves: ${this.properties.moves}`;
             let currentOrder =  tileTarg.style.order; //change flex order between tiles
             let emptyOrder = this.properties.emptyTile.style.order
             tileTarg.style.order = emptyOrder;
