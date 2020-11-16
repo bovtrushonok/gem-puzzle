@@ -39,7 +39,7 @@ body {
     width: 85%;
     display: flex;
     flex-flow: row nowrap;
-    justify-items: flex-start;
+    justify-content: space-around;
     align-content: center;
     margin: 10px auto 5px;
     padding: 10px;

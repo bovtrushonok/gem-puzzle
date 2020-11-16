@@ -5,7 +5,7 @@ const GemPuzzle = {
         timer: null,
         updateBtn: null,
         movesCounter: null,
-        fieldSizeSelect: null,
+        fieldSizeSelect: null, //container with input to choose size of the field
         puzzlesContainer: null, //puzzles area
         puzzles: [], // HTML elements puzzles
      },
@@ -18,6 +18,7 @@ const GemPuzzle = {
         },
         moves: 0,
         size: null, // row and column length in puzzle field
+        standartFieldSize: 16,
         emptyTile: null,
         emptyTileRow: null,
         emptyTileColumn: null,
@@ -47,9 +48,9 @@ const GemPuzzle = {
         this.elements.updateBtn.addEventListener('click', () => {
             this.properties.moves = 0;
             this.elements.movesCounter.innerHTML = `moves: ${this.properties.moves}`;
-            this.createTilesSequence(16);
-            this.updatePuzzle(16);
-            this.createPuzzlesArray(16);
+            this.createTilesSequence(this.properties.standartFieldSize);
+            this.updatePuzzle(this.properties.standartFieldSize);
+            this.createPuzzlesArray(this.properties.standartFieldSize);
             this.clearTimer();
             this.timerOn();
         });
@@ -78,9 +79,9 @@ const GemPuzzle = {
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
         /*init functions to create random sequence, puzzles on field and start timer*/
-        this.createTilesSequence(16);//invoke on button to chooze size of field
-        this.createPuzzle(16); //invoke on button to chooze size of field 
-        this.createPuzzlesArray(16); //invoke on button to choose size of field
+        this.createTilesSequence(this.properties.standartFieldSize);//invoke on button to chooze size of field
+        this.createPuzzle(this.properties.standartFieldSize); //invoke on button to chooze size of field 
+        this.createPuzzlesArray(this.properties.standartFieldSize); //invoke on button to choose size of field
         this.timerOn();
     },
 
