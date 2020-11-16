@@ -18,7 +18,7 @@ const GemPuzzle = {
         },
         moves: 0,
         size: null, // row and column length in puzzle field
-        standartFieldSize: 16,
+        fieldSize: 16,
         emptyTile: null,
         emptyTileRow: null,
         emptyTileColumn: null,
@@ -48,9 +48,9 @@ const GemPuzzle = {
         this.elements.updateBtn.addEventListener('click', () => {
             this.properties.moves = 0;
             this.elements.movesCounter.innerHTML = `moves: ${this.properties.moves}`;
-            this.createTilesSequence(this.properties.standartFieldSize);
-            this.updatePuzzle(this.properties.standartFieldSize);
-            this.createPuzzlesArray(this.properties.standartFieldSize);
+            this.createTilesSequence(this.properties.fieldSize);
+            this.updatePuzzle(this.properties.fieldSize);
+            this.createPuzzlesArray(this.properties.fieldSize);
             this.clearTimer();
             this.timerOn();
         });
@@ -58,16 +58,18 @@ const GemPuzzle = {
         this.elements.fieldSizeSelect = document.createElement('div');
         this.elements.fieldSizeSelect.innerHTML = `<label for="fieldSize" style="width:100%">Choose a field size:</label> 
                                                   <br>
-                                                  <input list="sizes" id="fieldSize" name="fieldSize" style="width:50%"/><datalist id="sizes">
-                                                <option value="3x3">
-                                                <option value="4x4">
-                                                <option value="5x5">
-                                                <option value="6x6">
-                                                <option value="7x7">
-                                                <option value="8x8">
-                                                </datalist>`;
+                                                  <input list="sizes" id="fieldSize" name="fieldSize" style="width:50%"/>
+                                                  <datalist id="sizes">
+                                                  <option value="3x3">
+                                                  <option value="4x4">
+                                                  <option value="5x5">
+                                                  <option value="6x6">
+                                                  <option value="7x7">
+                                                  <option value="8x8">
+                                                 </datalist>`;
 
         this.elements.fieldSizeSelect.classList.add('gameboard__menu__fieldSizeSelect');
+        
 
         /*append created elements to HTML*/
         this.elements.menu.append(this.elements.timer);
@@ -79,10 +81,43 @@ const GemPuzzle = {
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
         /*init functions to create random sequence, puzzles on field and start timer*/
-        this.createTilesSequence(this.properties.standartFieldSize);//invoke on button to chooze size of field
-        this.createPuzzle(this.properties.standartFieldSize); //invoke on button to chooze size of field 
-        this.createPuzzlesArray(this.properties.standartFieldSize); //invoke on button to choose size of field
+        this.createTilesSequence(this.properties.fieldSize);
+        this.createPuzzle(this.properties.fieldSize); 
+        this.createPuzzlesArray(this.properties.fieldSize); 
         this.timerOn();
+
+        const select = document.querySelector('#fieldSize');
+        select.addEventListener('change', (e) => {
+           switch (e.target.value) {
+                case  "3x3":
+                    this.properties.fieldSize = 9;
+                break
+                case "4x4":
+                    this.properties.fieldSize = 16;
+                break
+                case "5x5":
+                    this.properties.fieldSize = 25;
+                break
+                case "6x6":
+                    this.properties.fieldSize = 36;
+                break
+                case "7x7":
+                    this.properties.fieldSize = 49;
+                break
+                case "8x8":
+                    this.properties.fieldSize = 64;
+                break
+                default:
+                    this.properties.fieldSize = 16;
+                break
+            };
+            this.createTilesSequence(this.properties.fieldSize);
+            this.elements.puzzlesContainer.innerHTML = '';
+            this.createPuzzle(this.properties.fieldSize); 
+            this.createPuzzlesArray(this.properties.fieldSize); 
+            this.clearTimer();
+            this.timerOn();
+        });
     },
 
     timerOn() {
