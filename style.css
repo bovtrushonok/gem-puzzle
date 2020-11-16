@@ -1,10 +1,15 @@
+html {
+    font-size: 100%;
+    font-family: 'Quicksand', sans-serif;
+  }
+
 body {
     width: 100%;
     max-width: 100%;
     padding: 0;
     margin: 0;
     height: 100vh;
-    background: #111;
+    background: #5D6D7E;
     color: black;
 }
 
@@ -26,17 +31,25 @@ body {
             inset -.25em -.25em 1em 0 hsl(360, 88%, 22%),
             inset -.15em -.15em .2em 0 hsl(360, 88%, 2%);
     border-radius: 1.2em;
-    padding: 2px;
+    padding: 20px 2px;
+    transition: all 3.5s ease-in;
 }
 
 .gameboard__menu {
     width: 90%;
     display: flex;
     flex-flow: row nowrap;
+    justify-items: flex-start;
     margin: 10px auto 5px;
     padding: 2px;
-    height: 150px;
+    height: 50px;
     background-color: black;
+}
+
+.gameboard__menu__timer {
+    width: 10%;
+    font-size: 15px;
+    color: white;
 }
 
 .gameboard__puzzle {
@@ -46,26 +59,53 @@ body {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
-    border: 1px solid black;
 }
 
 .gameboard__puzzle__tile {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
     margin: 1px;
-    background-color: grey;
-    font-size: 20px;
+    background-color: #ABB2B9;
     cursor: pointer;
     border-radius: 5%;
+    max-width: 93px;
 }
 
-.standart {
+.standart-size {
     width: 24%;
     height: 24%;
-    max-width: 93px;
+}
+
+.small-size {
+    width: 33%;
+    height: 33%;
+}
+
+.medium-size {
+    width: 19%;
+    height: 19%;
+}
+
+.large-size {
+    width: 16%;
+    height: 16%;
+}
+
+.extra-large-size {
+    width: 13%;
+    height: 13%;
+}
+
+.extra-extra-large-size {
+    width: 11%;
+    height: 11%;
 }
 
 .empty {
    cursor: default;
-   background-color: yellow;
+   background-color: red;
+   color: red;
 }
 

@@ -2,11 +2,16 @@ const GemPuzzle = {
     elements: {
         main: null, //board
         menu: null,
+        timer: null,
         puzzlesContainer: null, //puzzles area
         puzzles: [], // HTML elements puzzles
      },
 
     properties: {
+        time: {
+            minutes: 0,
+            sec: -1,
+        },
         size: null, 
         emptyTile: null,
         emptyTileRow: null,
@@ -22,6 +27,9 @@ const GemPuzzle = {
         this.elements.puzzlesContainer.classList.add('gameboard__puzzle');  
         this.elements.menu = document.createElement('div');
         this.elements.menu.classList.add('gameboard__menu');  
+        this.elements.timer = document.createElement('div');
+        this.elements.timer.classList.add('gameboard__menu__timer');
+        this.elements.menu.append(this.elements.timer);
         this.elements.main.append(this.elements.menu);
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
@@ -30,8 +38,30 @@ const GemPuzzle = {
         this.createPuzzle(16); //invoke on button to chooze size of field 
         this.elements.puzzles = Array.from(this.elements.puzzlesContainer.querySelectorAll('.gameboard__puzzle__tile'));
         this.createPuzzlesArray(16); //invoke on button to choose size of field
-       // this.timerOn();
+        this.timerOn();
     },
+
+    timerOn() {
+        const self = this;
+        let minutes = 0;
+        let sec = -1;
+        function count(self) {
+            sec++;
+            if (sec === 60) {
+                sec = 0;
+                minutes++;
+            };
+           
+            if (minutes < 10) {
+                (sec < 10) ? self.elements.timer.textContent = `time 0${minutes}:0${sec}`: self.elements.timer.textContent = `time 0${minutes}:${sec}`;
+            } else {
+                self.elements.timer.textContent = `time ${minutes}:${sec}`;
+            };
+            
+        };
+        setInterval (() => count(self), 1000); 
+    },
+
 
     createTilesSequence(puzzleSize) { //create array of random numbers for puzzles
         for (let i = 0; i < puzzleSize; i++) {
@@ -42,8 +72,7 @@ const GemPuzzle = {
     },
 
     randomInteger(min, max) { // случайное число от min до (max+1)
-        let rand = min + Math.random() * (max + 1 - min);
-        return Math.floor(rand);
+        return Math.floor(min + Math.random() * (max + 1 - min));
     },
 
     createPuzzlesArray(puzzleSize) { //create 2d array of current puzzles situation
@@ -111,39 +140,40 @@ const GemPuzzle = {
     createPuzzle(puzzleSize) {
         for (let i = 0; i < puzzleSize; i++) {
             const puzzleTile = document.createElement("div");
+            const puzzleTileContent = document.createElement("span");
             puzzleTile.classList.add("gameboard__puzzle__tile");
             switch(puzzleSize) {
                 case 16:
-                    puzzleTile.classList.add("standart");
+                    puzzleTile.classList.add("standart-size");
                 break
                 case 9:
-                    puzzleTile.classList.add("standart");
+                    puzzleTile.classList.add("small-size");
                 break
                 case 25:
-                    puzzleTile.classList.add("standart");
+                    puzzleTile.classList.add("medium-size");
                 break
                 case 36:
-                    puzzleTile.classList.add("standart");
+                    puzzleTile.classList.add("large-size");
                 break
                 case 49:
-                    puzzleTile.classList.add("standart");
+                    puzzleTile.classList.add("extra-large-size");
                 break
                 case 64:
-                    puzzleTile.classList.add("standart");
+                    puzzleTile.classList.add("extra-extra-large-size");
                 break
             };
 
-            puzzleTile.textContent = this.properties.tilesSequence[i];
+            puzzleTileContent.textContent = this.properties.tilesSequence[i];
             puzzleTile.style.order = i;
     
-            if (puzzleTile.textContent == 9) puzzleTile.classList.add('empty');
+            if (puzzleTileContent.textContent == puzzleSize) puzzleTile.classList.add('empty');
             puzzleTile.addEventListener('click', (e) => {
                 this.changeSequence(e);
             });
+            puzzleTile.append(puzzleTileContent);
             this.elements.puzzlesContainer.append(puzzleTile);
         };
         this.properties.size = Math.sqrt(puzzleSize);
- 
     },
 }
 
