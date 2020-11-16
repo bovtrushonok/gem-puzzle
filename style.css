@@ -104,7 +104,7 @@ body {
     background-color: #ABB2B9;
     cursor: default;
     border-radius: 5%;
-    max-width: 93px;
+   max-width: 122px;
 }
 
 .clickable {
@@ -117,8 +117,8 @@ body {
 }
 
 .small-size {
-    width: 33%;
-    height: 33%;
+    width: 30%;
+    height: 30%;
 }
 
 .medium-size {
