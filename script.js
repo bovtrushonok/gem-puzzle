@@ -42,6 +42,7 @@ const GemPuzzle = {
         this.elements.updateBtn.classList.add('update-bcg');
         this.elements.updateBtn.addEventListener('click', () => {
             this.properties.moves = 0;
+            this.elements.movesCounter.innerHTML = `moves: ${this.properties.moves}`;
             this.createTilesSequence(16);
             this.updatePuzzle(16);
             this.createPuzzlesArray(16);
