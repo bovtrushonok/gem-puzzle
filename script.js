@@ -103,9 +103,11 @@ const GemPuzzle = {
             
         if (tileTarg) {
             this.properties.moves++;
+            this.playSound();
             this.elements.movesCounter.innerHTML = `moves: ${this.properties.moves}`;
             let currentOrder =  tileTarg.style.order; //change flex order between tiles
-            let emptyOrder = this.properties.emptyTile.style.order
+            let emptyOrder = this.properties.emptyTile.style.order;
+            //tileTarg.style.transition = 'order 0.5s';
             tileTarg.style.order = emptyOrder;
             this.properties.emptyTile.style.order = currentOrder;
             for (let j = 0; j < this.properties.size; j++) { //switch tiles in puzzlesArray
@@ -188,6 +190,13 @@ const GemPuzzle = {
             this.elements.puzzlesContainer.append(puzzleTile);
         };
         this.properties.size = Math.sqrt(puzzleSize);
+    },
+
+    playSound() {
+        const audio = document.createElement('audio');
+        audio.src = "assets/sounds/tink.wav";
+        audio.currentTime = 0;
+        audio.play();
     },
 }
 
