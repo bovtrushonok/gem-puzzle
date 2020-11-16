@@ -36,7 +36,7 @@ body {
 }
 
 .gameboard__menu {
-    width: 90%;
+    width: 85%;
     display: flex;
     flex-flow: row nowrap;
     justify-items: flex-start;
@@ -44,7 +44,8 @@ body {
     margin: 10px auto 5px;
     padding: 10px;
     height: 50px;
-    background-color: black;
+    border-radius: 1.2em;
+    background-color: rgba(231, 76, 60, 0.7) ;
 }
 
 .gameboard__menu__timer,
