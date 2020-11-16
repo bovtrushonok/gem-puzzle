@@ -5,6 +5,7 @@ const GemPuzzle = {
         timer: null,
         updateBtn: null,
         movesCounter: null,
+        fieldSizeSelect: null,
         puzzlesContainer: null, //puzzles area
         puzzles: [], // HTML elements puzzles
      },
@@ -16,7 +17,7 @@ const GemPuzzle = {
             id: null,
         },
         moves: 0,
-        size: null, 
+        size: null, // row and column length in puzzle field
         emptyTile: null,
         emptyTileRow: null,
         emptyTileColumn: null,
@@ -30,13 +31,16 @@ const GemPuzzle = {
         this.elements.puzzlesContainer = document.createElement('div');
         this.elements.puzzlesContainer.classList.add('gameboard__puzzle');  
         this.elements.menu = document.createElement('div');
-        this.elements.menu.classList.add('gameboard__menu');  
+        this.elements.menu.classList.add('gameboard__menu'); 
+
         this.elements.timer = document.createElement('div');
         this.elements.timer.innerHTML = `<span>time:<span>`;
         this.elements.timer.classList.add('gameboard__menu__timer');
+
         this.elements.movesCounter = document.createElement('div');
         this.elements.movesCounter.innerHTML = `<span>moves:<span>`;
         this.elements.movesCounter.classList.add('gameboard__menu__movesCounter');
+
         this.elements.updateBtn = document.createElement('div');
         this.elements.updateBtn.innerHTML = `<span class="material-icons">settings_backup_restore</span>`; //`<span class="material-icons">settings_backup_restore</span>`;
         this.elements.updateBtn.classList.add('update-bcg');
@@ -49,13 +53,31 @@ const GemPuzzle = {
             this.clearTimer();
             this.timerOn();
         });
+
+        this.elements.fieldSizeSelect = document.createElement('div');
+        this.elements.fieldSizeSelect.innerHTML = `<label for="fieldSize" style="width:100%">Choose a field size:</label> 
+                                                  <br>
+                                                  <input list="sizes" id="fieldSize" name="fieldSize" style="width:50%"/><datalist id="sizes">
+                                                <option value="3x3">
+                                                <option value="4x4">
+                                                <option value="5x5">
+                                                <option value="6x6">
+                                                <option value="7x7">
+                                                <option value="8x8">
+                                                </datalist>`;
+
+        this.elements.fieldSizeSelect.classList.add('gameboard__menu__fieldSizeSelect');
+
+        /*append created elements to HTML*/
         this.elements.menu.append(this.elements.timer);
         this.elements.menu.append(this.elements.movesCounter);
         this.elements.menu.append(this.elements.updateBtn);
+        this.elements.main.append(this.elements.fieldSizeSelect);
+        
         this.elements.main.append(this.elements.menu);
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
-        
+        /*init functions to create random sequence, puzzles on field and start timer*/
         this.createTilesSequence(16);//invoke on button to chooze size of field
         this.createPuzzle(16); //invoke on button to chooze size of field 
         this.createPuzzlesArray(16); //invoke on button to choose size of field
@@ -63,7 +85,7 @@ const GemPuzzle = {
     },
 
     timerOn() {
-        const self = this;
+        const self = this; //save reference to GemPuzzle object
         let minutes = 0;
         let sec = -1;
         function count(self) {
@@ -99,7 +121,7 @@ const GemPuzzle = {
         };          
     },
 
-    randomInteger(min, max) { // случайное число от min до (max+1)
+    randomInteger(min, max) { // random number from min to (max+1)
         return Math.floor(min + Math.random() * (max + 1 - min));
     },
 
@@ -118,7 +140,7 @@ const GemPuzzle = {
         this.defineClickableTiles(); // add clickable class to tiles around empty one
     },
     
-    changeSequence(tileTarg) { //to switch empty tile and available for click tile
+    changeSequence(tileTarg) { //to switch empty tile and clicked tile
         let currentTileColumn;
         let currentTileRow;
             
@@ -126,12 +148,13 @@ const GemPuzzle = {
             this.properties.moves++;
             this.playSound();
             this.elements.movesCounter.innerHTML = `moves: ${this.properties.moves}`;
-            let currentOrder =  tileTarg.style.order; //change flex order between tiles
+            /*change flex order between tiles */
+            let currentOrder =  tileTarg.style.order; 
             let emptyOrder = this.properties.emptyTile.style.order;
-            //tileTarg.style.transition = 'order 0.5s';
             tileTarg.style.order = emptyOrder;
             this.properties.emptyTile.style.order = currentOrder;
-            for (let j = 0; j < this.properties.size; j++) { //switch tiles in puzzlesArray
+            /* detect clicked tile coordinates in 2d puzzlesArray */
+            for (let j = 0; j < this.properties.size; j++) { 
                 if (this.properties.puzzlesArray[j].indexOf(tileTarg) !== -1) {
                     currentTileRow = j;
                     currentTileColumn = this.properties.puzzlesArray[j].indexOf(tileTarg);
@@ -140,7 +163,8 @@ const GemPuzzle = {
                     this.properties.puzzlesArray[j][k].classList.remove("clickable");
                 };
             };
-        [this.properties.puzzlesArray[currentTileRow][currentTileColumn], this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn]] = [this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn], this.properties.puzzlesArray[currentTileRow][currentTileColumn]];
+            /* switch tiles elements in 2d-puzzlesArray */
+            [this.properties.puzzlesArray[currentTileRow][currentTileColumn], this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn]] = [this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn], this.properties.puzzlesArray[currentTileRow][currentTileColumn]];
         };
 
         this.defineClickableTiles() //as tiles were switched, we need to re-define clickable tiles
@@ -156,6 +180,7 @@ const GemPuzzle = {
                 emptyTile = this.properties.puzzlesArray[j][k];
                  row = j;
                  column = k;
+                 /*add clickable class to all neighbour tiles */
                 if (k < this.properties.size - 1) this.properties.puzzlesArray[j][k + 1].classList.add('clickable');
                 if (k > 0) this.properties.puzzlesArray[j][k - 1].classList.add('clickable');
                 if (j > 0) this.properties.puzzlesArray[j - 1][k].classList.add('clickable');
@@ -163,9 +188,10 @@ const GemPuzzle = {
                };
             };
         };
-      this.properties.emptyTile = emptyTile; //save empty tile HTML and coordinates to switch tiles on click
-      this.properties.emptyTileRow = row;
-      this.properties.emptyTileColumn = column;
+        /*save empty tile HTML and coordinates to switch tiles on click */
+       this.properties.emptyTile = emptyTile; 
+       this.properties.emptyTileRow = row;
+       this.properties.emptyTileColumn = column;
     },
 
     createPuzzle(puzzleSize) {
@@ -173,6 +199,7 @@ const GemPuzzle = {
             const puzzleTile = document.createElement("div");
             const puzzleTileContent = document.createElement("span");
             puzzleTile.classList.add("gameboard__puzzle__tile");
+            /* define tile size depending on field size*/
             switch(puzzleSize) {
                 case 16:
                     puzzleTile.classList.add("standart-size");
@@ -198,23 +225,25 @@ const GemPuzzle = {
             puzzleTile.style.order = i;
     
             if (puzzleTileContent.textContent == puzzleSize) puzzleTile.classList.add('empty');
+
             puzzleTile.addEventListener('click', (e) => {
                 let tileTarg;
-                if (e.target.classList.contains('clickable')) {
+                if (e.target.classList.contains('clickable')) { //check if the tile or span element was clicked
                     tileTarg = e.target;
                 } else if(e.target.parentNode.classList.contains('clickable')) {
                     tileTarg = e.target.parentNode;
                 }
-                this.changeSequence(tileTarg);
+                this.changeSequence(tileTarg); //call tiles change
             });
+
             puzzleTile.append(puzzleTileContent);
             this.elements.puzzlesContainer.append(puzzleTile);
         };
-        this.properties.size = Math.sqrt(puzzleSize);
-        this.elements.puzzles = Array.from(this.elements.puzzlesContainer.querySelectorAll('.gameboard__puzzle__tile'));
+        this.properties.size = Math.sqrt(puzzleSize); //length of row and column on puzzle field
+        this.elements.puzzles = Array.from(this.elements.puzzlesContainer.querySelectorAll('.gameboard__puzzle__tile')); //get all the puzzles as HTML elements
     },
 
-    updatePuzzle(puzzleSize) {
+    updatePuzzle(puzzleSize) { //change content, invoked on Start new game button
         for (let i = 0; i < this.elements.puzzles.length; i++) {
             this.elements.puzzles[i].classList.remove('empty');
             this.elements.puzzles[i].innerHTML = `<span>${this.properties.tilesSequence[i]}</span>`;

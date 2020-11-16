@@ -49,7 +49,7 @@ body {
 }
 
 .gameboard__menu__timer,
-.gameboard__menu__movesCounter{
+.gameboard__menu__movesCounter {
     width: 30%;
     display: flex;
     flex-flow: column wrap;
@@ -65,6 +65,24 @@ body {
     color: white;
     margin: 10px 5px;
     cursor: pointer;
+}
+
+.gameboard__menu__fieldSizeSelect {
+    width: 85%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-items: flex-start;
+    align-content: center;
+    margin: 10px auto 5px;
+}
+
+
+.overlay {
+    width: 100vh;
+    height: 100vh;
+    z-index: 1;
+    display: hidden;
+    background: rgba(0, 0, 0, 0.5);
 }
 
  
