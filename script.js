@@ -13,6 +13,7 @@ const GemPuzzle = {
         time: {
             minutes: 0,
             sec: -1,
+            id: null,
         },
         moves: 0,
         size: null, 
@@ -40,9 +41,11 @@ const GemPuzzle = {
         this.elements.updateBtn.innerHTML = `<span class="material-icons">settings_backup_restore</span>`; //`<span class="material-icons">settings_backup_restore</span>`;
         this.elements.updateBtn.classList.add('update-bcg');
         this.elements.updateBtn.addEventListener('click', () => {
+            this.properties.moves = 0;
             this.createTilesSequence(16);
             this.updatePuzzle(16);
             this.createPuzzlesArray(16);
+            this.clearTimer();
             this.timerOn();
         });
         this.elements.menu.append(this.elements.timer);
@@ -77,8 +80,14 @@ const GemPuzzle = {
                 (sec < 10) ? self.elements.timer.innerHTML = `time: ${minutes}:0${sec}`: self.elements.timer.textContent = `time: ${minutes}:${sec}`;
             };
         };
-        setInterval (() => count(self), 1000); 
+        let timerId = setInterval (() => count(self), 1000); 
+        this.properties.time.id = timerId;
     },
+
+    clearTimer() {
+        clearInterval(this.properties.time.id);
+    },
+    
 
     createTilesSequence(puzzleSize) { //create array of random numbers for puzzles
         this.properties.tilesSequence = [];
@@ -205,9 +214,11 @@ const GemPuzzle = {
     },
 
     updatePuzzle(puzzleSize) {
-        for (let i = 0; i < this.elements.puzzles; i++) {
-            this.elements.puzzles[i].textContent = this.properties.tilesSequence[i];
-            this.elements.puzzles[i].style.order = i;
+        for (let i = 0; i < this.elements.puzzles.length; i++) {
+            this.elements.puzzles[i].classList.remove('empty');
+            this.elements.puzzles[i].innerHTML = `<span>${this.properties.tilesSequence[i]}</span>`;
+            this.elements.puzzles[i].style.order = i;     
+            if (this.properties.tilesSequence[i] === puzzleSize)  this.elements.puzzles[i].classList.add("empty");  
         };
     },
 
