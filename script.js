@@ -47,21 +47,21 @@ const GemPuzzle = {
         let sec = -1;
         function count(self) {
             sec++;
+            self.properties.time.sec = sec;
             if (sec === 60) {
                 sec = 0;
                 minutes++;
+                self.properties.time.minutes = minutes;
             };
            
             if (minutes < 10) {
                 (sec < 10) ? self.elements.timer.textContent = `time 0${minutes}:0${sec}`: self.elements.timer.textContent = `time 0${minutes}:${sec}`;
             } else {
-                self.elements.timer.textContent = `time ${minutes}:${sec}`;
+                (sec < 10) ? self.elements.timer.textContent = `time ${minutes}:0${sec}`: self.elements.timer.textContent = `time ${minutes}:${sec}`;
             };
-            
         };
         setInterval (() => count(self), 1000); 
     },
-
 
     createTilesSequence(puzzleSize) { //create array of random numbers for puzzles
         for (let i = 0; i < puzzleSize; i++) {
@@ -90,27 +90,27 @@ const GemPuzzle = {
         this.defineClickableTiles(); // add clickable class to tiles around empty one
     },
     
-    changeSequence(e) { //to switch empty tile and available for click tile
+    changeSequence(tileTarg) { //to switch empty tile and available for click tile
         let currentTileColumn;
         let currentTileRow;
-        if (e.target.classList.contains('empty')) return; 
-        if (e.target.classList.contains('clickable')) {
-            let currentOrder =  e.target.style.order; //change flex order between tiles
+       
+       
+        if (tileTarg) {
+            let currentOrder =  tileTarg.style.order; //change flex order between tiles
             let emptyOrder = this.properties.emptyTile.style.order
-            e.target.style.order = emptyOrder;
+            tileTarg.style.order = emptyOrder;
             this.properties.emptyTile.style.order = currentOrder;
             for (let j = 0; j < this.properties.size; j++) { //switch tiles in puzzlesArray
-                if (this.properties.puzzlesArray[j].indexOf(e.target) !== -1) {
+                if (this.properties.puzzlesArray[j].indexOf(tileTarg) !== -1) {
                     currentTileRow = j;
-                    currentTileColumn = this.properties.puzzlesArray[j].indexOf(e.target);
-                    
+                    currentTileColumn = this.properties.puzzlesArray[j].indexOf(tileTarg);
                 }
                 for (let k = 0; k < this.properties.size; k++) { //clear all clickable classes to re-define the clickable tiles further
                     this.properties.puzzlesArray[j][k].classList.remove("clickable");
                 };
             };
         [this.properties.puzzlesArray[currentTileRow][currentTileColumn], this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn]] = [this.properties.puzzlesArray[this.properties.emptyTileRow][this.properties.emptyTileColumn], this.properties.puzzlesArray[currentTileRow][currentTileColumn]];
-        }
+        };
 
         this.defineClickableTiles() //as tiles were switched, we need to re-define clickable tiles
     },      
@@ -168,7 +168,13 @@ const GemPuzzle = {
     
             if (puzzleTileContent.textContent == puzzleSize) puzzleTile.classList.add('empty');
             puzzleTile.addEventListener('click', (e) => {
-                this.changeSequence(e);
+                let tileTarg;
+                if (e.target.classList.contains('clickable')) {
+                    tileTarg = e.target;
+                } else if(e.target.parentNode.classList.contains('clickable')) {
+                    tileTarg = e.target.parentNode;
+                }
+                this.changeSequence(tileTarg);
             });
             puzzleTile.append(puzzleTileContent);
             this.elements.puzzlesContainer.append(puzzleTile);
