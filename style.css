@@ -8,7 +8,7 @@ body {
     max-width: 100%;
     padding: 0;
     margin: 0;
-    height: 100vh;
+    max-height: 100vh;
     background: #5D6D7E;
     color: #212F3D;
 }
@@ -40,6 +40,7 @@ body {
     display: flex;
     flex-flow: row nowrap;
     justify-items: flex-start;
+    align-content: center;
     margin: 10px auto 5px;
     padding: 10px;
     height: 50px;
@@ -57,9 +58,17 @@ body {
     color: white;
 }
 
+.update-bcg {
+    width: 30px;
+    height: 30px;
+    color: white;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
  
 .gameboard__puzzle {
-    width: 90%;  
+    width: 97%;  
     height: 70%;
     margin: 0 auto;
     display: flex;
@@ -74,10 +83,13 @@ body {
     font-size: 2rem;
     margin: 1px;
     background-color: #ABB2B9;
-    cursor: pointer;
+    cursor: default;
     border-radius: 5%;
     max-width: 93px;
-    transition: order 0.5s;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 .standart-size {
@@ -115,4 +127,11 @@ body {
    background-color: red;
    color: red;
 }
+
+@media (max-width: 430px) {
+    html {
+        font-size: 14px;
+    }
+}
+  
 

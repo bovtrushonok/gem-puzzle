@@ -3,6 +3,7 @@ const GemPuzzle = {
         main: null, //board
         menu: null,
         timer: null,
+        updateBtn: null,
         movesCounter: null,
         puzzlesContainer: null, //puzzles area
         puzzles: [], // HTML elements puzzles
@@ -35,15 +36,24 @@ const GemPuzzle = {
         this.elements.movesCounter = document.createElement('div');
         this.elements.movesCounter.innerHTML = `<span>moves:<span>`;
         this.elements.movesCounter.classList.add('gameboard__menu__movesCounter');
+        this.elements.updateBtn = document.createElement('div');
+        this.elements.updateBtn.innerHTML = `<span class="material-icons">settings_backup_restore</span>`; //`<span class="material-icons">settings_backup_restore</span>`;
+        this.elements.updateBtn.classList.add('update-bcg');
+        this.elements.updateBtn.addEventListener('click', () => {
+            this.createTilesSequence(16);
+            this.updatePuzzle(16);
+            this.createPuzzlesArray(16);
+            this.timerOn();
+        });
         this.elements.menu.append(this.elements.timer);
         this.elements.menu.append(this.elements.movesCounter);
+        this.elements.menu.append(this.elements.updateBtn);
         this.elements.main.append(this.elements.menu);
         this.elements.main.append(this.elements.puzzlesContainer);
         document.body.append(this.elements.main);
         
         this.createTilesSequence(16);//invoke on button to chooze size of field
         this.createPuzzle(16); //invoke on button to chooze size of field 
-        this.elements.puzzles = Array.from(this.elements.puzzlesContainer.querySelectorAll('.gameboard__puzzle__tile'));
         this.createPuzzlesArray(16); //invoke on button to choose size of field
         this.timerOn();
     },
@@ -71,6 +81,7 @@ const GemPuzzle = {
     },
 
     createTilesSequence(puzzleSize) { //create array of random numbers for puzzles
+        this.properties.tilesSequence = [];
         for (let i = 0; i < puzzleSize; i++) {
             let randomNumber = this.randomInteger(1, puzzleSize);  
             if (this.properties.tilesSequence.includes(randomNumber)) --i;
@@ -190,6 +201,14 @@ const GemPuzzle = {
             this.elements.puzzlesContainer.append(puzzleTile);
         };
         this.properties.size = Math.sqrt(puzzleSize);
+        this.elements.puzzles = Array.from(this.elements.puzzlesContainer.querySelectorAll('.gameboard__puzzle__tile'));
+    },
+
+    updatePuzzle(puzzleSize) {
+        for (let i = 0; i < this.elements.puzzles; i++) {
+            this.elements.puzzles[i].textContent = this.properties.tilesSequence[i];
+            this.elements.puzzles[i].style.order = i;
+        };
     },
 
     playSound() {
