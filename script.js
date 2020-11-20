@@ -272,6 +272,7 @@ const GemPuzzle = {
                 this.changeSequence(tileTarg); //call tiles change
             });
 
+
             puzzleTile.append(puzzleTileContent);
             this.elements.puzzlesContainer.append(puzzleTile);
         };
