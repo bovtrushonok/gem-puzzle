@@ -1,7 +1,4 @@
-<<<<<<< Updated upstream
-# bovtrushonok-JS2020Q3
-Private repository for @bovtrushonok
-=======
-# bovtrushonok-JS2020Q3
-Private repository for @bovtrushonok
->>>>>>> Stashed changes
+GemPuzzle is project made during RS School JS course.
+
+Tech stack: HTML, CSS, JS
+
